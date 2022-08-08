@@ -1,0 +1,7 @@
+{
+  "name": "Feeds",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
