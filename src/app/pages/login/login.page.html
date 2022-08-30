@@ -13,7 +13,7 @@
 
     <div class="form-wrapper">
       <div class="form-container sign-in-container">
-        <form [formGroup]="loginForm" class="d-flex flex-column align-items-center">
+        <form [formGroup]="loginForm" class="d-flex flex-column align-items-center" (ngSubmit)="login()">
 
           <div class="form-control">
             <ion-item lines="none" class="input-field">

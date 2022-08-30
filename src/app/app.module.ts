@@ -16,7 +16,9 @@ import { HttpCallInterceptor } from './core/interceptor/http.interceptor';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot({
+      name :'feedsDB'
+    })
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {
     provide: HTTP_INTERCEPTORS,

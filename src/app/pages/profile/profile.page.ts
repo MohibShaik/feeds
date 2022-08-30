@@ -19,7 +19,7 @@ export class ProfilePage implements OnInit {
 
   public userData: User;
   public userFeeds$: Observable<any>;
-  private userId = JSON.parse(localStorage.getItem('userId'));
+  private userId: string | void;
   userAvator: string;
 
   constructor(
@@ -27,13 +27,18 @@ export class ProfilePage implements OnInit {
     private ajaxService: AjaxService,
     private router: Router,
     private toasterservice: ToasterService,
-    private dataService: DataService,
+    private storage: DataService,
     public modalController: ModalController,
     private uploadService: FileUploadService,
   ) { }
 
   ngOnInit() {
-    this.getUserInfo();
+    this.storage.get('userId').then(data => {
+      this.userId = data;
+      if (this.userId) {
+        this.getUserInfo();
+      }
+    });
   }
 
   getUserFeeds(event?: any) {
@@ -109,7 +114,7 @@ export class ProfilePage implements OnInit {
   }
 
   public logout() {
-    this.dataService.logout();
+    this.storage.logout();
   }
 
 }

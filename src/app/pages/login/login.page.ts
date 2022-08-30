@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AjaxService, ApiService, ToasterService } from 'src/app/core/services';
+import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,8 @@ export class LoginPage implements OnInit {
     private ajaxService: AjaxService,
     private modalCtrl: ModalController,
     private router: Router,
-    private toaster: ToasterService
+    private toaster: ToasterService,
+    private storage: DataService
   ) {
     this.initializeLoginForm();
   }
@@ -60,10 +61,10 @@ export class LoginPage implements OnInit {
       this.ajaxService.post(config).subscribe(
         (response) => {
           console.log(response);
-          this.toaster.presentToast('Log in successful', 'success-text')
-          localStorage.setItem('user', JSON.stringify(response?.user));
-          localStorage.setItem('userId', JSON.stringify(response.user.id));
-          localStorage.setItem('accessToken', response.accessToken);
+          this.toaster.presentToast('Log in successful', 'success-text');
+          this.storage.set('user', response?.user);
+          this.storage.set('accessToken', response.accessToken);
+          this.storage.set('userId', response.user.id);
           this.router.navigate(['dahboard']);
         },
         (error) => {

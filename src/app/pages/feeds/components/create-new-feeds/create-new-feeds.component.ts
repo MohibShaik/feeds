@@ -48,7 +48,7 @@ export class CreateNewFeedsComponent implements OnInit {
 
   takePicture = async () => {
     let camermaOptions: CameraOptions = {
-      quality: 50,
+      quality: 90,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Prompt

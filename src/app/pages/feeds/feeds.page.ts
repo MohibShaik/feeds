@@ -21,32 +21,29 @@ export class FeedsPage implements OnInit {
   public feeds: Feed[] = [];
 
   public feedSubscription: Observable<any>;
+  userId: any;
 
   constructor(private apiService: ApiService,
     private ajaxService: AjaxService,
     private modalController: ModalController,
     private toasterservice: ToasterService,
-    private dataService: DataService
+    private storage: DataService
   ) { }
 
   ngOnInit() {
-
+    this.getUserInfo()
   }
 
-  private getDatafrompusher() {
-    this.dataService.getFeedItems().subscribe(x => {
-      console.log(x)
-    })
-  }
   /**
    * check for userInfo
    */
   getUserInfo() {
-    this.userInfo = JSON.parse(localStorage.getItem('user'));
-    console.log(this.userInfo);
-    if (this.userInfo) {
-      this.getListOfFeeds();
-    }
+    this.storage.get('userId').then(data => {
+      this.userId = data;
+      if (this.userId) {
+        this.getListOfFeeds();
+      }
+    });
   }
 
   /**
@@ -65,13 +62,11 @@ export class FeedsPage implements OnInit {
 
     this.ajaxService.get(config).subscribe(
       (response) => {
-        console.log(response);
         this.feedsList = response;
         if (event) {
           event.target.complete();
         }
         this.checkLikes();
-
       },
       (error) => {
         console.log(error.error);

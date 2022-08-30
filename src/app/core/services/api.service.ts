@@ -19,7 +19,7 @@ const API_URLS = {
   login: `/users/login`,
   verify: `/users/verify`,
   updateUserInfo: `/users/update-user-info`,
-  getUserInfo: (userId: string) => `/users/profile/${userId}`,
+  getUserInfo: (userId: any) => `/users/profile/${userId}`,
   uploadUserAvator:`/users/update-user-avator`,
   getUsersList : `/users/list`,
   // posts API endpoints
