@@ -1,0 +1,61 @@
+<ion-content overflow-scroll="true">
+  <div class="container">
+    <div class="header-text">
+      <ion-text color="dark">
+        <h2>Hello Again!</h2>
+      </ion-text>
+
+      <ion-text color="dark">
+        <p>Welcome back you've been missed!</p>
+      </ion-text>
+
+    </div>
+
+    <div class="form-wrapper">
+      <div class="form-container sign-in-container">
+        <form [formGroup]="loginForm" class="d-flex flex-column align-items-center">
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">Email Address</ion-label>
+              <ion-input formControlName="emailAddress"></ion-input>
+            </ion-item>
+
+            <div class="error" *ngIf="f.emailAddress.touched && f.emailAddress.invalid">
+              <div *ngIf="f.emailAddress.errors?.required">
+                Email is Required
+              </div>
+              <div *ngIf="f.emailAddress.errors?.email">
+                Invalid Email
+              </div>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">Password</ion-label>
+              <ion-input formControlName="password" [type]="passwordType"></ion-input>
+              <ion-icon slot="end" [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+            </ion-item>
+
+            <div class="error" *ngIf="f.password.touched && f.password.invalid">
+              <div *ngIf="f.password.errors?.required">
+                Password is Required
+              </div>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="end center">
+            <a class="fp-link">Forgot Password?</a>
+          </div>
+
+          <ion-button expand="block" class="primary-expand-btn" (click)="login()">Login</ion-button>
+        </form>
+      </div>
+
+      <div class="footer">
+        <p>New to M'Notes? <a routerLink="/register">Register</a></p>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

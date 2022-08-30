@@ -1,0 +1,28 @@
+<ion-content overflow-scroll="true">
+  <div class="container">
+    <div class="img-wrapper">
+      <img src="assets/icon/otp-screen.png" alt="">
+    </div>
+
+    <form [formGroup]="verificationForm">
+
+      <div class="otp-screen">
+        <div class="text-medium mt-30 pl-10">
+          <div class="f-14 text-center">
+            OTP has been sent to <p class="f-16 fw-600 primary-text"> {{registeredUserInfo?.emailAddress}}</p>
+          </div>
+          <div class="text-center m-10" color="primary">
+            Enter OTP
+          </div>
+        </div>
+        <app-otp-screen [resend]="isResend" [details]="4" (inputValue)="otpValue($event)"></app-otp-screen>
+      </div>
+
+
+      <div class="input-feild">
+        <ion-button expand="block" class="primary-expand-btn" (click)="verifyOTP()">Verify</ion-button>
+      </div>
+    </form>
+
+  </div>
+</ion-content>

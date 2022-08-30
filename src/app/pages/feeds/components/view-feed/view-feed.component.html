@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="close-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="text-center">
+      Feed Details
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="feed-card">
+
+          <ion-card-header class="feed-card-header">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <img src="../../../../../assets/icon/user-avator-2.png" alt="user-avator" class="user-icon">
+
+              <div class="user-info">
+                <ion-card-title class="feed-card-title">{{Feed?.userId?.username}}</ion-card-title>
+                <p class="feed-date">{{Feed?.createdDate| date :'MMM d, y, h:mm a'}}</p>
+              </div>
+
+            </div>
+          </ion-card-header>
+
+
+          <img [src]="Feed?.imagePath" class="feed-card-image" />
+
+          <div class="feed-content-div">
+            <p>{{Feed?.content}}</p>
+          </div>
+
+          <ion-card-content class="feed-card-content overflow-content">
+            <div class="comments-div">
+              <p class="sub-header">Comments</p>
+              <ng-container *ngFor="let c of Feed.comments">
+                <div class="comment-item">
+                  <p class="comment-text">{{c.comment}}</p>
+
+                  <p class="commented-user">-- {{c.userId?.username}}</p>
+                </div>
+              </ng-container>
+            </div>
+            
+          </ion-card-content>
+
+          
+        </ion-card>
+
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

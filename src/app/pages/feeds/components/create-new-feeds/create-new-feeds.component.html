@@ -1,0 +1,62 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+              <ion-icon name="close-outline" class="icon-size"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+
+        <ion-title class="text-center">
+            Upload New Post
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ng-container *ngIf="!imageUrl">
+        <div class="img-placeholder">
+            <img src="assets/icon/download.png" alt="">
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="imageUrl">
+        <div class="img-placeholder">
+            <img [src]="sanitize(imageUrl)" alt="">
+        </div>
+    </ng-container>
+
+    <div class="form-control">
+        <ion-item lines="none" class="input-field">
+            <ion-label position="floating">About The Post</ion-label>
+            <ion-textarea [formControl]="contentText" placeholder="Some context supporting the post..."></ion-textarea>
+        </ion-item>
+
+        <div class="error" *ngIf="contentText.touched && contentText.invalid">
+            <p *ngIf="contentText.errors?.required" color="danger">
+                Please add some context supporting the post
+            </p>
+        </div>
+    </div>
+
+</ion-content>
+
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button expand="full" fill="clear" (click)="takePicture()">
+                    <ion-icon slot="start" name="camera"></ion-icon>
+                    Select a Image
+                </ion-button>
+            </ion-col>
+            <ion-col>
+                <ion-button fill="clear" expand="full" (click)="uploadPicture()"
+                    [disabled]="contentText.invalid && !imageUrl">
+                    <ion-icon slot="start" name="camera"></ion-icon>
+                    Upload post
+                </ion-button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-footer>

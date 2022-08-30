@@ -1,0 +1,27 @@
+.container {
+    padding: 80px 10px;
+
+    .header-text {
+        text-align: center;
+    }
+
+    .form-wrapper {
+        padding: 10px;
+        .title {
+            h2 {
+                text-align: center;
+            }
+        }
+
+        .fp-link {
+            font-size: 13px;
+        }
+    }
+
+    .footer {
+        p {
+            text-align: center;
+            margin: 15px;
+        }
+    }
+}

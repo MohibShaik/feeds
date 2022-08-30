@@ -1,0 +1,50 @@
+.container {
+    padding: 20px 15px;
+
+    .header-text {
+        text-align: center;
+    }
+
+    .form-wrapper {
+        .title {
+            h2 {
+                text-align: center;
+            }
+        }
+
+        .fp-link {
+            font-size: 13px;
+        }
+    }
+
+    .footer {
+        p {
+            text-align: center;
+            margin: 15px;
+        }
+    }
+
+    .form-control {
+        margin: 25px 0px !important;
+    }
+
+    .primary-expand-btn {
+        margin: 0px !important;
+    }
+
+    .helper-text {
+        margin: 15px 0px;
+        font-size: 13px;
+    }
+
+    .user-avator {
+        text-align: center;
+
+        >img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid #737373;
+        }
+    }
+}

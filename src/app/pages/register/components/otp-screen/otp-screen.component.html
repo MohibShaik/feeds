@@ -1,0 +1,7 @@
+<div class="mt-20 otp-input-box">
+  <span *ngFor="let digits of otpNumbers;let i = index;">
+    <input id="_{{i}}" type="tel" #_{{i}}="ngModel" name="_{{i}}" matInput cdkFocusInitial class="otp"
+      [(ngModel)]="digits.value" (keydown)="keydown($event,i)" (ngModelChange)="valueChange(i)" minlength="1"
+      maxlength="1" autofocus autocomplete="off" />
+  </span>
+</div>

@@ -24,3 +24,14 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import "./theme/general.scss";
+@import "./theme/variables.scss";
+
+
+ion-content {
+    --background: #ffffff;
+}
+
+.customToaster {
+    color: #ffffff;
+}

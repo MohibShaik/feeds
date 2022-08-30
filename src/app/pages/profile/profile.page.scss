@@ -1,0 +1,63 @@
+.container {
+    padding: 15px;
+
+    .header {
+        text-align: center;
+    }
+
+    .user-avator {
+        text-align: center;
+
+        >img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid #737373;
+        }
+    }
+
+    .body {
+        margin-top: 15px;
+
+        .cards-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            >.card-item {
+                width: 80px;
+                height: 80px;
+                border-radius: 10px;
+                border: 1px solid var(--ion-color-medium);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                .count-text {
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin: 5px;
+                }
+
+                .label-text {
+                    margin: 0px;
+                }
+            }
+        }
+
+        .settings-card {
+            margin: 20px 0px 5px 0px;
+            border: 1px solid var(--ion-color-medium);
+            border-radius: 15px;
+
+            >ion-item {
+                padding: 5px;
+
+                >.label-text {
+                    color: var(--ion-color-black);
+                }
+            }
+        }
+    }
+}

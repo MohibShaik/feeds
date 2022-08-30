@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary" fxLayout="row" fxLayoutAlign="center center">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="close-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      Edit User Information
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+
+    <div class="form-wrapper">
+      <div class="form-container sign-in-container">
+
+        <div class="user-avator">
+          <img [src]="userData?.imagePath ? userData?.imagePath : '/assets/icon/user-avator-2.png' " alt="user-avator"
+            (click)="takePicture()">
+        </div>
+
+
+        <form [formGroup]="userForm" class="d-flex flex-column align-items-center">
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">User Name</ion-label>
+              <ion-input formControlName="username"></ion-input>
+            </ion-item>
+
+            <div class="error" *ngIf="f.username.touched && f.username.invalid">
+              <div *ngIf="f.username.errors?.required">
+                User name is Required
+              </div>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">Email Address</ion-label>
+              <ion-input formControlName="emailAddress"></ion-input>
+            </ion-item>
+
+            <div class="error" *ngIf="f.emailAddress.touched && f.emailAddress.invalid">
+              <div *ngIf="f.emailAddress.errors?.required">
+                Email is Required
+              </div>
+              <div *ngIf="f.emailAddress.errors?.email">
+                Invalid Email
+              </div>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">Password</ion-label>
+              <ion-input formControlName="password"></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="form-control">
+            <ion-item lines="none" class="input-field">
+              <ion-label position="floating">Status</ion-label>
+              <ion-input formControlName="status"></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="helper-text">
+            <b class="tertiary-text">Note : </b>
+            <span class="f-13">User can edit only User Name and Email Address</span>
+          </div>
+
+          <ion-button expand="block" class="primary-expand-btn" (click)="updateUserInfo()">Update</ion-button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</ion-content>

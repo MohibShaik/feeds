@@ -1,0 +1,9 @@
+.image-div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .image {
+        padding: 15px;
+    }
+}

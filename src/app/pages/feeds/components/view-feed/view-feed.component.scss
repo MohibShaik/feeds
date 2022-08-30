@@ -1,0 +1,26 @@
+.comments-div {
+    padding: 10px;
+
+    > .sub-header {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .comment-item {
+        background: #d7d8da;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 5px 0px;
+
+        > .commented-user {
+            text-align: end;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    }
+}
+
+// .overflow-content {
+//     height: 300px;
+//     overflow-y: scroll;
+// }

@@ -1,0 +1,126 @@
+@import "./variables.scss";
+
+.form-control {
+    margin: 15px 0px;
+}
+
+.input-field {
+    border-radius: 10px;
+    border: 1px solid #282C35;
+
+    >.text-area {
+        min-height: 75px;
+        font-size: 15px;
+    }
+}
+
+.feed-card {
+    margin: 0px;
+
+    .feed-card-header,
+    .feed-card-image {
+        border: 1px solid #f5f5f5;
+    }
+
+    .feed-card-image {
+        width: 100%;
+        max-height: 200px;
+        min-height: 200px;
+        object-fit: contain;
+    }
+
+    .user-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    .feed-card-title {
+        font-size: 16px;
+    }
+
+    .feed-date {
+        margin: 5px 0px;
+        font-size: 11px;
+    }
+
+    .feed-content-div {
+        padding: 0px 15px;
+
+        >p {
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+
+    .feed-card-content {
+        padding: 10px 0px;
+        border: 1px solid #f5f5f5;
+    }
+}
+
+.icons-view {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+
+.isDisabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.error {
+    color: var(--ion-color-danger) !important;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.primary-expand-btn {
+    min-height: 45px;
+    margin: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.icon-size {
+    font-size: 24px;
+}
+
+.f-14 {
+    font-size: 14px;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.f-16 {
+    font-size: 16px;
+}
+
+.primary-text {
+    color: var(--ion-color-primary);
+}
+
+.alert-logout-btn {
+    font-size: 13px;
+}
+
+.alert-no-btn {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.tertiary-text {
+    color: var(--ion-color-tertiary);
+}
+
+a {
+    text-decoration: none;
+}

@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary" fxLayout="row" fxLayoutAlign="center center">
+
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="close-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      Active Users
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+
+  <ion-list>
+    <ng-container *ngFor="let user of usersList">
+      <ion-item class="item">
+        <div class="image-wrapper">
+          <img [src]="user?.imagePath ? user?.imagePath : '/assets/icon/user-avator-2.png' " alt="user-avator"
+            class="avator">
+        </div>
+        <ion-label>{{user?.username}}</ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+</ion-content>

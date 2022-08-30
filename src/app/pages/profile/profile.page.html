@@ -1,0 +1,69 @@
+<ion-content>
+  <div class="container">
+    <div class="header">
+      <div class="user-avator">
+        <img [src]="userData?.imagePath ? userData?.imagePath : '/assets/icon/user-avator-2.png' " alt="user-avator"
+          (click)="viewProfilePicture(userData?.imagePath)">
+      </div>
+
+      <h2 class="text-center f-22 fw-600">{{userData?.username}}</h2>
+      <p *ngIf="userData?.role==='admin'" class="text-center f-14 fw-600">
+        (Admin)
+      </p>
+      <div class="action text-center">
+        <a class="f-14 fw-600" color="primary" (click)="openEditDialog()">Edit Profile</a>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="cards-list">
+        <div class="card-item">
+          <ion-text color="primary">
+            <p class="fw-600 f-22 count-text">{{(userFeeds$ | async)?.length}}</p>
+          </ion-text>
+          <p class="label-text">Feeds</p>
+        </div>
+
+      </div>
+
+      <ion-card class="settings-card">
+        <ion-item lines="none">
+          <ion-icon name="heart-outline" slot="start"></ion-icon>
+          <ion-label class="label-text f-16 fw-600">Favorites</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon name="arrow-down-circle-outline" slot="start"></ion-icon>
+          <ion-label class="label-text f-16 fw-600">Downloads</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item lines="none" *ngIf="userData?.role === 'admin'" (click)="viewUsersList()">
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label class="label-text f-16 fw-600">User Management</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+          <ion-label class="label-text f-16 fw-600">FAQ's</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon name="headset-outline" slot="start"></ion-icon>
+          <ion-label class="label-text f-16 fw-600">Support center</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item lines="none" (click)="logout()">
+          <ion-icon name="log-out-outline" class="danger-text" slot="start"></ion-icon>
+          <ion-label class="label-text danger-text f-16 fw-600">Log out</ion-label>
+          <ion-icon name="chevron-forward-outline" class="danger-text" slot="end"></ion-icon>
+        </ion-item>
+
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

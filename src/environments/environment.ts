@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  DEV_HOST: 'localhost:8080',
+  apiUrl: "http://localhost:8082",
+  // apiUrl: 'https://m-notes-app.herokuapp.com',
+  envName: 'dev',
 };
 
 /*

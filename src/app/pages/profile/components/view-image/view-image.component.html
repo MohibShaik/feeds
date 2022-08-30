@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="close-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <!-- <ion-buttons slot="end">
+      <ion-button fill="clear" class="icon-btn" (click)="downloadImage(image)">
+        <ion-icon name="download-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="image-div">
+    <img [src]="image" alt="" srcset="" class="image">
+  </div>
+</ion-content>
