@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import Pusher from 'pusher-js';
 import { Subject, Observable } from 'rxjs';
-import { Feed } from '../models/feed';
 
 @Injectable({
   providedIn: 'root'

@@ -19,7 +19,7 @@ export class ProfilePage implements OnInit {
 
   public userData: User;
   public userFeeds$: Observable<any>;
-  private userId: string | void;
+  private userId: string;
   userAvator: string;
 
   constructor(
@@ -33,12 +33,10 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.storage.get('userId').then(data => {
-      this.userId = data;
-      if (this.userId) {
-        this.getUserInfo();
-      }
-    });
+    this.userId = localStorage.getItem('userId');
+    if (this.userId) {
+      this.getUserInfo(this.userId);
+    }
   }
 
   getUserFeeds(event?: any) {
@@ -61,16 +59,16 @@ export class ProfilePage implements OnInit {
     modal.onDidDismiss().then((response) => {
       console.log(response)
       if (response.data) {
-        this.getUserInfo()
+        this.getUserInfo(this.userId)
       }
     });
 
     return await modal.present();
   }
 
-  private getUserInfo() {
+  private getUserInfo(userId: string) {
     const { API_CONFIG, API_URLs } = this.apiService;
-    const url = `${API_CONFIG.apiHost}${API_URLs.getUserInfo(this.userId)}`;
+    const url = `${API_CONFIG.apiHost}${API_URLs.getUserInfo(userId)}`;
 
     const config = {
       url,

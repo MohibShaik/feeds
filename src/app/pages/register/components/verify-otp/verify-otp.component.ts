@@ -15,6 +15,8 @@ export class VerifyOtpComponent implements OnInit {
   isResend = 0;
   otp: string;
   otpBtnEnable: boolean;
+  private notificationToken = localStorage.getItem('notificationToken');
+
 
   constructor(private fb: FormBuilder,
     private apiService: ApiService,
@@ -36,8 +38,8 @@ export class VerifyOtpComponent implements OnInit {
   private getUserInfo() {
     this.storage.get('user').then(response => {
       this.registeredUserInfo = response;
+      console.log(this.registeredUserInfo);
     });
-    console.log(this.registeredUserInfo);
   }
 
   otpValue(data) {
@@ -73,7 +75,8 @@ export class VerifyOtpComponent implements OnInit {
         (response) => {
           console.log(response);
           this.toasterservice.presentToast(response?.message, 'success-text');
-          localStorage.setItem('user', JSON.stringify(response.data));
+          this.storage.set('user', response?.data);
+          this.sendNotification(response?.message);
           this.router.navigate(['/login']);
         },
         (error) => {
@@ -82,6 +85,32 @@ export class VerifyOtpComponent implements OnInit {
         }
       );
     }
+  }
+
+  private sendNotification(message: string) {
+    const { API_CONFIG, API_URLs } = this.apiService;
+    const url = `${API_CONFIG.apiHost}${API_URLs.sendNotification}`;
+
+    const payload = {
+      registrationToken: this.notificationToken,
+      message: message,
+    }
+
+    const config = {
+      url,
+      data: payload,
+      cacheKey: false,
+    };
+    this.ajaxService.post(config).subscribe(
+      (response) => {
+        console.log(response);
+        this.toasterservice.presentToast('notification sent', 'success-text');
+      },
+      (error) => {
+        console.log(error);
+        this.toasterservice.presentToast(error?.error?.message, 'error-text');
+      }
+    );
   }
 
 }

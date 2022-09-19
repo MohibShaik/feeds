@@ -23,7 +23,7 @@ interface LocalFile {
   styleUrls: ['./create-new-feeds.component.scss'],
 })
 export class CreateNewFeedsComponent implements OnInit {
-  public userId = JSON.parse(localStorage.getItem('userId'));
+  public userId = localStorage.getItem('userId');
   public newFeedForm: FormGroup;
   images: LocalFile[] = [];
   imageUrl: string;

@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpCallInterceptor } from './core/interceptor/http.interceptor';
@@ -24,7 +25,8 @@ import { HttpCallInterceptor } from './core/interceptor/http.interceptor';
     provide: HTTP_INTERCEPTORS,
     useClass: HttpCallInterceptor,
     multi: true,
-  },],
+  },
+  { provide: 'API_URI', useValue: environment.apiUrl }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

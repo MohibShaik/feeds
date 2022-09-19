@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@capacitor/status-bar';
+import { Platform } from '@ionic/angular';
+import { FcmService } from './core/services/fcm.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,17 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(
+    private platform: Platform,
+    private fcmService: FcmService
+  ) { 
+    this.initializeApp()
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      // Trigger the push setup 
+      this.fcmService.initPush();
+    });
+  }
 }

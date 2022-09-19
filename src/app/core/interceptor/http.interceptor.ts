@@ -15,7 +15,6 @@ import { LoaderService } from '../services/loader.service';
 export class HttpCallInterceptor implements HttpInterceptor {
     isLoading = false;
     loaderToShow: any;
-    accessToken
     constructor(public loadingController: LoaderService, private storage: DataService) {
     }
 
@@ -25,14 +24,11 @@ export class HttpCallInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         this.loadingController.present();
 
-        this.storage.get('accessToken').then(data => {
-            this.accessToken = data;
-            console.log(this.accessToken);
-        });
+        const accessToken = localStorage.getItem('accessToken')
 
         const tokenizedRequest = request.clone({
             setHeaders: {
-                Authorization: `Bearer ${this.accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
 

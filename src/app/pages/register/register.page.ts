@@ -13,14 +13,13 @@ export class RegisterPage implements OnInit {
   public signupForm: FormGroup;
   public passwordType: string = 'password';
   public passwordIcon: string = 'eye-off';
-
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
     private ajaxService: AjaxService,
     private router: Router,
     private toasterservice: ToasterService,
-    private storage : DataService
+    private storage: DataService
   ) {
     this.signupForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -55,10 +54,9 @@ export class RegisterPage implements OnInit {
       };
       this.ajaxService.post(config).subscribe(
         (response) => {
-          console.log(response);
           this.toasterservice.presentToast('Account created successfully', 'error-text');
-          this.storage.set('user', JSON.stringify(response.data[1]));
-          this.storage.set('userId', JSON.stringify(response.data[1].id));
+          this.storage.set('user', response.data[1]);
+          localStorage.setItem('userId', response.data[1].id)
           this.router.navigate(['/register/verify-otp']);
         },
         (error) => {

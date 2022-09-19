@@ -22,6 +22,9 @@ const API_URLS = {
   getUserInfo: (userId: any) => `/users/profile/${userId}`,
   uploadUserAvator:`/users/update-user-avator`,
   getUsersList : `/users/list`,
+  sendNotification:`/notification`,
+
+  
   // posts API endpoints
   listOfPosts: `/posts`,
   likePostById: (postId: string) => `/posts/${postId}/like`,

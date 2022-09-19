@@ -19,7 +19,7 @@ import { ViewFeedComponent } from './components/view-feed/view-feed.component';
     FeedsPageRoutingModule,
     SharedModule,
   ],
-  declarations: [FeedsPage , CreateNewFeedsComponent , ViewFeedComponent],
-  entryComponents: [CreateNewFeedsComponent , ViewFeedComponent]
+  declarations: [FeedsPage, CreateNewFeedsComponent, ViewFeedComponent],
+  entryComponents: [CreateNewFeedsComponent, ViewFeedComponent]
 })
 export class FeedsPageModule { }

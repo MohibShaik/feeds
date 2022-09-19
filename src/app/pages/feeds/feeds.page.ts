@@ -1,49 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { Post, User } from 'src/app/core/models';
-import { Feed } from 'src/app/core/models/feed';
 import { Like } from 'src/app/core/models/like';
 import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/core/services';
+import { FeedService } from 'src/app/core/services/feed.service';
 import { CreateNewFeedsComponent } from './components/create-new-feeds/create-new-feeds.component';
 import { ViewFeedComponent } from './components/view-feed/view-feed.component';
+import { FeedsQuery } from './state/feeds.query';
+import { FeedsService } from './state/feeds.service';
 
 @Component({
   selector: 'app-feeds',
   templateUrl: './feeds.page.html',
   styleUrls: ['./feeds.page.scss'],
 })
-export class FeedsPage implements OnInit {
+export class FeedsPage implements OnInit, OnDestroy {
   feedsList: any;
+  feedsList$: Observable<any>;
+
   public userInfo: User;
   public comment: string = '';
-
-  public feeds: Feed[] = [];
-
   public feedSubscription: Observable<any>;
-  userId: any;
+  public userId: any;
 
   constructor(private apiService: ApiService,
     private ajaxService: AjaxService,
     private modalController: ModalController,
     private toasterservice: ToasterService,
-    private storage: DataService
+    private storage: DataService,
+    private feedService: FeedService,
+    private feedsService: FeedsService,
+    public query: FeedsQuery
   ) { }
 
   ngOnInit() {
-    this.getUserInfo()
+    this.getUserInfo();
   }
 
   /**
    * check for userInfo
    */
   getUserInfo() {
-    this.storage.get('userId').then(data => {
-      this.userId = data;
-      if (this.userId) {
-        this.getListOfFeeds();
-      }
-    });
+    this.userId = localStorage.getItem('userId')
+    if (this.userId) {
+      this.getListOfFeeds();
+    }
   }
 
   /**
@@ -52,30 +54,22 @@ export class FeedsPage implements OnInit {
    * returns list of feeds
    */
   getListOfFeeds(event?: any) {
-    const { API_CONFIG, API_URLs } = this.apiService;
-    const url = `${API_CONFIG.apiHost}${API_URLs.listOfPosts}`;
+    this.feedsList$ = this.feedsService.getListOfFeeds();
 
-    const config = {
-      url,
-      cacheKey: false,
-    };
 
-    this.ajaxService.get(config).subscribe(
-      (response) => {
-        this.feedsList = response;
-        if (event) {
-          event.target.complete();
-        }
-        this.checkLikes();
-      },
-      (error) => {
-        console.log(error.error);
-        if (error.error.status === 403) {
-          this.toasterservice.presentToast(error?.error?.message, 'error-text');
-        }
-      }
-    );
+
+    // const { API_CONFIG, API_URLs } = this.apiService;
+    // const url = `${API_CONFIG.apiHost}${API_URLs.listOfPosts}`;
+
+    // const config = {
+    //   url,
+    //   cacheKey: false,
+    // };
+
+    // this.feedsList$ = this.ajaxService.get(config);
+
   }
+
 
   /**
    * 
@@ -210,5 +204,9 @@ export class FeedsPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

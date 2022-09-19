@@ -63,8 +63,8 @@ export class LoginPage implements OnInit {
           console.log(response);
           this.toaster.presentToast('Log in successful', 'success-text');
           this.storage.set('user', response?.user);
-          this.storage.set('accessToken', response.accessToken);
-          this.storage.set('userId', response.user.id);
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('userId', response.user.id);
           this.router.navigate(['dahboard']);
         },
         (error) => {
