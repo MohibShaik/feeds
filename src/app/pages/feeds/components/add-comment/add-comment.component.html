@@ -1,3 +1,67 @@
-<p>
-  add-comment works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="close-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="text-center">
+      Comments
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
+        <ion-icon name="checkmark-outline" class="icon-size"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="comments-wrapper">
+    <ion-grid>
+      <ion-row *ngFor="let comment of post?.comments" class="m-15">
+        <ion-col size="2">
+          <img [src]="comment?.userId?.imagePath?  comment.userId?.imagePath : '/assets/icon/user-avator-2.png'"
+            alt="user-avator" class="user-icon">
+        </ion-col>
+        <ion-col size="10">
+          <div class="main-wrapper" fxLayout="column">
+            <div fxLayout="row">
+              <ion-text color="primary">
+                <p class="m-0">{{comment?.userId?.username}}</p>
+              </ion-text>
+              <p class="f-11 comment-date">{{comment?.commentedDate | date :'MMM d, y, h:mm a'}}</p>
+            </div>
+            <ion-text color="dark">
+              <p class="f-12">{{comment?.comment}}</p>
+            </ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <section class="fixed-input">
+    <ion-grid>
+      <ion-row class="comment-wrapper">
+        <ion-col size="10">
+          <div class="input-field">
+            <ion-item lines="none" class="input-field">
+              <ion-textarea [(ngModel)]="newComment" placeholder="comment here ......"></ion-textarea>
+            </ion-item>
+          </div>
+        </ion-col>
+
+        <ion-col size="2">
+          <ion-button expand="block" (click)="addComment()" [disabled]="!newComment?.length">
+            <ion-icon name="send"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+</ion-content>

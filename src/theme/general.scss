@@ -30,9 +30,10 @@
     }
 
     .user-icon {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         margin-right: 10px;
+        border-radius: 50%;
     }
 
     .feed-card-title {
@@ -96,13 +97,26 @@
     font-size: 14px;
 }
 
+.f-16 {
+    font-size: 16px;
+}
+
+.f-11 {
+    font-size: 11px;
+}
+
+.f-12 {
+    font-size: 12px;
+}
+
+.f-13 {
+    font-size: 13px;
+}
 .fw-600 {
     font-weight: 600;
 }
 
-.f-16 {
-    font-size: 16px;
-}
+
 
 .primary-text {
     color: var(--ion-color-primary);

@@ -41,7 +41,7 @@ export class ProfilePage implements OnInit {
 
   getUserFeeds(event?: any) {
     const { API_CONFIG, API_URLs } = this.apiService;
-    const url = `${API_CONFIG.apiHost}${API_URLs.userFeedsById(this.userData?.id)}`;
+    const url = `${API_CONFIG.apiHost}${API_URLs.userFeedsById(this.userId)}`;
 
     const config = {
       url,

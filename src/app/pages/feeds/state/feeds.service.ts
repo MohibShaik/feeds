@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services';
 import { HttpService } from 'src/app/core/services/http.service';
 import { Feed } from '../models/Feed.model';
@@ -12,8 +12,9 @@ import Pusher from 'pusher-js';
 })
 export class FeedsService {
     APIUrls: any;
-    public subject: Subject<Feed> = new Subject<Feed>();
+    public FeedsSubject = new BehaviorSubject(false);
     private pusherClient: Pusher;
+    feeds: any;
 
     constructor(private http: HttpService, private store: FeedsStore, private apiService: ApiService) {
         this.APIUrls = this.apiService.API_URLs;
@@ -23,24 +24,25 @@ export class FeedsService {
             'Feeds',
             (data: Feed) => {
                 console.log(data);
-                this.setFeedsData(data);
-                this.subject.next(data);
+                this.FeedsSubject.next(true);
             }
         );
     }
 
-    setFeedsData(data: any): void {
-        this.store.update({ feedsData: data });
+    getFeedItems(): Observable<any> {
+        return this.FeedsSubject.asObservable();
     }
 
     getListOfFeeds(): Observable<any> {
-        return this.http.get(this.APIUrls.listOfPosts, null, true).pipe(
-            map((data: any) => {
-                console.log(data);
-                this.setFeedsData(data.data);
-                return data;
-            })
-        );
+        return this.http.get(this.APIUrls.listOfPosts, null, true).pipe(tap(data => {
+            this.feeds = data.data;
+            return data.data
+        }));
+    }
+
+    addCommentToFeed(data: any, postId: string): Observable<any> {
+        console.log(data);
+        return this.http.post(this.APIUrls.commentPostById(postId), data)
     }
 
 }

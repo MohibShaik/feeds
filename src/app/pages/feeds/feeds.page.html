@@ -7,37 +7,39 @@
 </ion-header>
 
 
-
 <ion-content [fullscreen]="true">
-
-  <div class="sub-header">
-    <ion-button (click)="addFeed()" class="add-btn">
-      <span>
-        <ion-icon name="add-outline"></ion-icon>
-      </span>
-      Post a feed
-    </ion-button>
-
-  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addFeed()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-refresher slot="fixed" (ionRefresh)="getListOfFeeds($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ng-container *ngIf="(feedsList$ | async)">
+    <div class="text-center">
+      <ion-button class="floating-btn" (click)="getListOfFeeds()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        New feeds available , Refresh
+      </ion-button>
+    </div>
+  </ng-container>
 
-  <ng-container *ngIf="(query?.FeedsData$| async)?.length; then hadData; else noData">
+  <ng-container *ngIf="feedsList?.length; then hadData; else noData">
   </ng-container>
 
   <ng-template #hadData>
-
     <ion-grid>
       <ion-row>
-        <ion-col size="12" *ngFor="let n of query?.FeedsData$| async;let even = even; let odd = odd">
+        <ion-col size="12" *ngFor="let n of feedsList;let even = even; let odd = odd">
 
           <ion-card class="feed-card">
             <ion-card-header class="feed-card-header">
               <div fxLayout="row" fxLayoutAlign="start center">
-                <img src="../../../assets/icon/user-avator-2.png" alt="user-avator" class="user-icon">
+                <img [src]="n?.userId?.imagePath?  n?.userId?.imagePath : '/assets/icon/user-avator-2.png'"
+                  alt="user-avator" class="user-icon">
 
                 <div class="user-info">
                   <ion-card-title class="feed-card-title">{{n?.userId?.username}}</ion-card-title>
@@ -55,18 +57,17 @@
 
             <ion-card-content class="feed-card-content" fxLayout="row" fxLayoutAlign="center center">
               <div class="like-div three-divs" fxLayout="row" fxLayoutAlign="center center">
-                <!-- <img src="../../../assets/icon/like.png" alt="" class="icons-view" (click)="likePost(n)"> -->
                 <ion-icon name="thumbs-up-outline" class="icon_with_right_margin icons-view" *ngIf="n?.canLike"
                   (click)="likePost(n)">
                 </ion-icon>
-
                 <ion-icon name="thumbs-up" class="icon_with_right_margin icons-view" *ngIf="!n?.canLike"
                   (click)="unlikePost(n)">
                 </ion-icon>
                 <ion-badge color="tertiary">{{n?.likes?.length}}</ion-badge>
               </div>
 
-              <div class="comment-div three-divs" fxLayout="row" fxLayoutAlign="center center">
+              <div class="comment-div three-divs" fxLayout="row" fxLayoutAlign="center center"
+                (click)="openCommentDialog(n)">
                 <img src="../../../assets/icon/comment.png" alt="" class="icons-view">
                 <ion-badge color="tertiary">{{n?.comments?.length}}</ion-badge>
               </div>
@@ -77,13 +78,13 @@
               </div>
             </ion-card-content>
 
-            <div class="comment-div" fxLayout="row" fxLayoutAlign=" center">
+            <!-- <div class="comment-div" fxLayout="row" fxLayoutAlign=" center">
               <ion-item lines="none" class="input-field comment-div-input">
                 <ion-textarea placeholder="Add comment here..." [(ngModel)]="comment" class="text-area"></ion-textarea>
               </ion-item>
               <ion-button color="primary" (click)="addComment(n)" class="comment-btn" [disabled]="!comment.length">
                 Comment</ion-button>
-            </div>
+            </div> -->
           </ion-card>
 
 
@@ -94,8 +95,6 @@
 
   <ng-template #noData>
     <div class="no-data-div">
-      {{this.feedsList$ | async}}
-
       <h2 class="text-center f-22">No Feeds Found</h2>
       <p class="text-center f-14">Looks like you haven't added any feeds </p>
     </div>

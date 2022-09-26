@@ -19,7 +19,7 @@
       <div class="cards-list">
         <div class="card-item">
           <ion-text color="primary">
-            <p class="fw-600 f-22 count-text">{{(userFeeds$ | async)?.length ? (userFeeds$ | async)?.length : 0 }}</p>
+            <p class="fw-600 f-22 count-text">{{(userFeeds$ | async)?.data.length ? (userFeeds$ | async)?.data.length : 0 }}</p>
           </ion-text>
           <p class="label-text">Feeds</p>
         </div>

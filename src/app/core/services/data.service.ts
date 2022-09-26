@@ -37,6 +37,7 @@ export class DataService {
 
   public logout() {
     this.storage.clear();
+    localStorage.clear();
     this.router.navigateByUrl('/login');
   }
 }

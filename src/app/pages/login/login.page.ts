@@ -10,7 +10,6 @@ import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/co
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
   public loginForm: FormGroup;
   public passwordType: string = 'password';
   public passwordIcon: string = 'eye-off';
@@ -27,11 +26,19 @@ export class LoginPage implements OnInit {
     this.initializeLoginForm();
   }
   ngOnInit() {
-
+    this.checkLoggedInUser()
   }
 
   get f() {
     return this.loginForm.controls;
+  }
+
+  private checkLoggedInUser() {
+    const userId = localStorage.getItem('userId');
+    const accessToken = localStorage.getItem('accessToken');
+    if (userId && accessToken) {
+      this.router.navigate(['dahboard'], { replaceUrl: true });
+    }
   }
 
   public initializeLoginForm() {
@@ -65,7 +72,7 @@ export class LoginPage implements OnInit {
           this.storage.set('user', response?.user);
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('userId', response.user.id);
-          this.router.navigate(['dahboard']);
+          this.router.navigate(['dahboard'], { replaceUrl: true });
         },
         (error) => {
           this.toaster.presentToast(error.error.message, 'error-text')
