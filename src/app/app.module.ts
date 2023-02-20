@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpCallInterceptor } from './core/interceptor/http.interceptor';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,15 +19,16 @@ import { HttpCallInterceptor } from './core/interceptor/http.interceptor';
     AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot({
-      name :'feedsDB'
+      name: 'feedsDB'
     })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpCallInterceptor,
-    multi: true,
-  },
-  { provide: 'API_URI', useValue: environment.apiUrl }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCallInterceptor,
+      multi: true,
+    },
+    { provide: 'API_URI', useValue: environment.apiUrl }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

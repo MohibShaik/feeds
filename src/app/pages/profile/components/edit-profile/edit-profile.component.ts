@@ -13,7 +13,7 @@ import { Camera, CameraOptions, CameraResultType, CameraSource, Photo } from '@c
   styleUrls: ['./edit-profile.component.scss'],
 })
 export class EditProfileComponent implements OnInit {
-  private userId = localStorage.getItem('userId');
+  private userId = this.storage.getItem('userId');
   public userForm: FormGroup;
   public userData: User;
   userAvator: string;
@@ -92,7 +92,7 @@ export class EditProfileComponent implements OnInit {
       (response) => {
         this.closeModal(true);
         this.toaster.presentToast(response?.message, 'success-text');
-        this.storage.set('user', response.data);
+        this.storage.setItem('user', response.data);
         this.router.navigate(['/dahboard/profile']);
       },
       (error) => {
@@ -107,7 +107,7 @@ export class EditProfileComponent implements OnInit {
 
   takePicture = async () => {
     let camermaOptions: CameraOptions = {
-      quality: 50,
+      quality: 100,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Prompt

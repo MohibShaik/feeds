@@ -13,9 +13,9 @@ export class DataService {
   constructor(private router: Router, private storage: Storage) {
     this.init()
   }
-  
+
   async init() {
-   await this.storage.create();
+    await this.storage.create();
   }
 
   // Create and expose methods that users of this service can
@@ -34,6 +34,13 @@ export class DataService {
     return !!this.storage.get('accessToken')
   }
 
+  public setItem(key: string, value: any) {
+    return localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  public getItem(key: string) {
+    return JSON.parse(localStorage.getItem(key));
+  }
 
   public logout() {
     this.storage.clear();

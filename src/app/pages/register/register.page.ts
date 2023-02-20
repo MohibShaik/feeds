@@ -56,7 +56,7 @@ export class RegisterPage implements OnInit {
         (response) => {
           this.toasterservice.presentToast('Account created successfully', 'error-text');
           this.storage.set('user', response.data[1]);
-          localStorage.setItem('userId', response.data[1].id)
+          this.storage.setItem('userId', response.data[1].id)
           this.router.navigate(['/register/verify-otp']);
         },
         (error) => {

@@ -40,7 +40,6 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img [src]="n?.userId?.imagePath?  n?.userId?.imagePath : '/assets/icon/user-avator-2.png'"
                   alt="user-avator" class="user-icon">
-
                 <div class="user-info">
                   <ion-card-title class="feed-card-title">{{n?.userId?.username}}</ion-card-title>
                   <p class="feed-date">{{n?.createdDate| date :'MMM d, y, h:mm a'}}</p>
@@ -49,45 +48,46 @@
               </div>
             </ion-card-header>
 
-            <img [src]="n?.imagePath" class="feed-card-image" />
+            <ion-thumbnail class="feed-thumbnail">
+              <ion-img [src]="n?.imagePath" class="feed-card-image"></ion-img>
+            </ion-thumbnail>
 
             <div class="feed-content-div">
               <p>{{n?.content}}</p>
             </div>
 
             <ion-card-content class="feed-card-content" fxLayout="row" fxLayoutAlign="center center">
+
+              <div class="view-details three-divs" fxLayout="row" fxLayoutAlign="center center">
+                <ion-icon [name]="checkFavourites(n)? 'heart' :'heart-outline'"
+                  [color]="checkFavourites(n)? 'danger' :''" class="icon_with_right_margin icons-view"
+                  (click)="checkFavourites(n)? removeFavourites(n): addFavourites(n)">
+                </ion-icon>
+              </div>
+
               <div class="like-div three-divs" fxLayout="row" fxLayoutAlign="center center">
                 <ion-icon name="thumbs-up-outline" class="icon_with_right_margin icons-view" *ngIf="n?.canLike"
                   (click)="likePost(n)">
                 </ion-icon>
-                <ion-icon name="thumbs-up" class="icon_with_right_margin icons-view" *ngIf="!n?.canLike"
+                <ion-icon name="thumbs-up" class="icon_with_right_margin icons-view" color="primary" *ngIf="!n?.canLike"
                   (click)="unlikePost(n)">
                 </ion-icon>
-                <ion-badge color="tertiary">{{n?.likes?.length}}</ion-badge>
+                <ion-badge color="light">{{n?.likes?.length}}</ion-badge>
               </div>
 
               <div class="comment-div three-divs" fxLayout="row" fxLayoutAlign="center center"
                 (click)="openCommentDialog(n)">
                 <img src="../../../assets/icon/comment.png" alt="" class="icons-view">
-                <ion-badge color="tertiary">{{n?.comments?.length}}</ion-badge>
+                <ion-badge color="light">{{n?.comments?.length}}</ion-badge>
               </div>
 
-              <div class="view-details three-divs" fxLayout="row" fxLayoutAlign="center center"
-                (click)="viewFeedDetails(n)">
-                <p>View Details</p>
-              </div>
+              <!-- <div class="view-details three-divs" fxLayout="row" fxLayoutAlign="center center">
+                <ion-icon name="download-outline" class="icon_with_right_margin icons-view" (click)="downloadFeed(n)">
+                </ion-icon>
+              </div> -->
             </ion-card-content>
 
-            <!-- <div class="comment-div" fxLayout="row" fxLayoutAlign=" center">
-              <ion-item lines="none" class="input-field comment-div-input">
-                <ion-textarea placeholder="Add comment here..." [(ngModel)]="comment" class="text-area"></ion-textarea>
-              </ion-item>
-              <ion-button color="primary" (click)="addComment(n)" class="comment-btn" [disabled]="!comment.length">
-                Comment</ion-button>
-            </div> -->
           </ion-card>
-
-
         </ion-col>
       </ion-row>
     </ion-grid>

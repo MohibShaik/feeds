@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Directory, Filesystem, FilesystemDirectory } from '@capacitor/filesystem';
 import { ModalController } from '@ionic/angular';
 import { combineLatest, Observable, Subscription } from 'rxjs';
+import { NotificationMessages } from 'src/app/core/enums/messages';
 import { Post, User } from 'src/app/core/models';
 import { Like } from 'src/app/core/models/like';
 import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/core/services';
+import { FcmService } from 'src/app/core/services/fcm.service';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { CreateNewFeedsComponent } from './components/create-new-feeds/create-new-feeds.component';
 import { ViewFeedComponent } from './components/view-feed/view-feed.component';
@@ -20,21 +23,37 @@ export class FeedsPage implements OnInit, OnDestroy {
   feedsList$: Observable<any>;
   public comment: string = '';
   private userId: string;
+  favouritePosts: any;
+  private user: User
 
   constructor(private apiService: ApiService,
     private ajaxService: AjaxService,
     private modalController: ModalController,
     private toasterservice: ToasterService,
-    private storage: DataService,
+    private fcmService: FcmService,
     private feedsService: FeedsService,
-    public query: FeedsQuery
+    public query: FeedsQuery,
+    private dataStorage: DataService
   ) {
-    this.userId = localStorage.getItem('userId');
+    this.userId = this.dataStorage.getItem('userId');
+    this.getUserInfo();
   }
 
   ngOnInit() {
+    // this.getListOfFeeds();
+  }
+
+  ionViewWillEnter() {
+    this.getFavouritePostsByUserId();
     this.getListOfFeeds();
   }
+
+  private getUserInfo() {
+    this.dataStorage.get('user').then(response => {
+      this.user = response
+    }).catch(error => { console.log(error) })
+  }
+
   /**
    * 
    * @param event ion refrseher event
@@ -64,6 +83,13 @@ export class FeedsPage implements OnInit, OnDestroy {
     this.feedsList$ = this.feedsService.getFeedItems();
   }
 
+  private getFavouritePostsByUserId() {
+    this.feedsService.getFavouritePosts(this.userId).subscribe(response => {
+      this.favouritePosts = response.data;
+      console.log(this.favouritePosts, 'fav');
+    })
+  }
+
   /**
    * 
    * @param post post item
@@ -84,6 +110,7 @@ export class FeedsPage implements OnInit, OnDestroy {
 
     this.ajaxService.post(config).subscribe(
       (response) => {
+        this.fcmService.notificationBuilder(NotificationMessages?.LIKE_POST);
         this.getListOfFeeds()
       },
       (error) => {
@@ -110,6 +137,7 @@ export class FeedsPage implements OnInit, OnDestroy {
 
     this.ajaxService.post(config).subscribe(
       (response) => {
+        this.fcmService.notificationBuilder(NotificationMessages?.DISLIKE_POST);
         this.getListOfFeeds()
       },
       (error) => {
@@ -129,43 +157,14 @@ export class FeedsPage implements OnInit, OnDestroy {
       componentProps: { post: post, userId: this.userId }
     });
 
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-
+    modal.onDidDismiss().then((response) => {
+      if (response.data) {
+        this.fcmService.notificationBuilder(NotificationMessages?.COMMENT_POST);
+        this.getListOfFeeds()
       }
     });
 
     return await modal.present();
-  }
-
-  public addComment(post: Post) {
-    if (this.comment.length) {
-      const { API_CONFIG, API_URLs } = this.apiService;
-      const url = `${API_CONFIG.apiHost}${API_URLs.commentPostById(post.id)}`;
-      const payload = {
-        userId: this.userId,
-        comment: this.comment
-      };
-      const config = {
-        url,
-        cacheKey: false,
-        data: payload
-      };
-
-      this.ajaxService.post(config).subscribe(
-        (response) => {
-          this.toasterservice.presentToast(response?.message, 'success-text');
-          this.comment = '';
-          this.getListOfFeeds()
-        },
-        (error) => {
-          console.log(error.error);
-          if (error.error.status === 403) {
-            this.toasterservice.presentToast(error?.error?.message, 'error-text');
-          }
-        }
-      );
-    }
   }
 
   public checkLikes() {
@@ -216,7 +215,73 @@ export class FeedsPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  ngOnDestroy(): void {
+  public checkFavourites(post: Post) {
+    return this.favouritePosts?.filter(favourite => favourite?.postId?.id === post?.id).length > 0
+  }
+
+  public removeFavourites(post: Post) {
+    const payload = {
+      postId: post?.id
+    }
+    this.feedsService.removeFavorites(payload, this.userId).subscribe(response => {
+      if (response) {
+        this.getFavouritePostsByUserId()
+      }
+    })
+  }
+
+  public addFavourites(post: Post) {
+    const payload = {
+      postId: post?.id,
+      userId: this.userId
+    }
+    this.feedsService.addFavorites(payload, this.userId).subscribe(response => {
+      if (response) {
+        this.fcmService.notificationBuilder(NotificationMessages?.FAVOURITE_POST);
+        this.getFavouritePostsByUserId()
+      }
+    })
+  }
+
+  public async downloadFeed(post: Post) {
+    // retrieve the image
+    const response = await fetch(post?.imagePath);
+    // convert to a Blob
+    const blob = await response.blob();
+    // convert to base64 data, which the Filesystem plugin requires
+    const base64Data = await this.convertBlobToBase64(blob) as string;
+
+    // const savedFile = await Filesystem.writeFile({
+    //   path: 'test',
+    //   data: base64Data,
+    //   directory: FilesystemDirectory.Data
+    // });
+
+    // Write the file to the data directory
+    const fileName = new Date().getTime() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data
+    });
+
+    // Use webPath to display the new image instead of base64 since it's
+    // already loaded into memory
+    return {
+      filepath: fileName,
+    };
 
   }
+
+  // helper function
+  convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader;
+    reader.onerror = reject;
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+
+  ngOnDestroy(): void { }
 }

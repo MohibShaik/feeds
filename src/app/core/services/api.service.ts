@@ -20,18 +20,22 @@ const API_URLS = {
   verify: `/users/verify`,
   updateUserInfo: `/users/update-user-info`,
   getUserInfo: (userId: any) => `/users/profile/${userId}`,
-  uploadUserAvator:`/users/update-user-avator`,
-  getUsersList : `/users/list`,
-  sendNotification:`/notification`,
+  uploadUserAvator: `/users/update-user-avator`,
+  getUsersList: `/users/list`,
+  // notification
+  sendNotification: `/admin/notification`,
 
-  
+
   // posts API endpoints
   listOfPosts: `/posts`,
   likePostById: (postId: string) => `/posts/${postId}/like`,
   unlikePostById: (postId: string) => `/posts/${postId}/unlike`,
   commentPostById: (postId: string) => `/posts/${postId}/comment`,
   userFeedsById: (userId: string) => `/posts/user/${userId}/`,
-  uploadAFeed: `/posts/upload`
+  uploadAFeed: `/posts/upload`,
+  getFavouritePosts: (userId: string) => `/posts/${userId}/favourites`,
+  addFavouritePosts: (userId: string) => `/posts/${userId}/favourites`,
+  removeFavouritePosts: (userId: string) => `/posts/${userId}/updateFavourites`,
 
 };
 

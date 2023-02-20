@@ -2,9 +2,9 @@
     <ion-toolbar color="primary">
         <ion-buttons slot="start">
             <ion-button fill="clear" class="icon-btn" (click)="closeModal(false)">
-              <ion-icon name="close-outline" class="icon-size"></ion-icon>
+                <ion-icon name="close-outline" class="icon-size"></ion-icon>
             </ion-button>
-          </ion-buttons>
+        </ion-buttons>
 
         <ion-title class="text-center">
             Upload New Post
@@ -44,16 +44,16 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <ion-button expand="full" fill="clear" (click)="takePicture()">
+                <ion-button expand="full" fill="clear" (click)="takePicture()" [disabled]="isUploading">
                     <ion-icon slot="start" name="camera"></ion-icon>
                     Select a Image
                 </ion-button>
             </ion-col>
             <ion-col>
                 <ion-button fill="clear" expand="full" (click)="uploadPicture()"
-                    [disabled]="contentText.invalid && !imageUrl">
-                    <ion-icon slot="start" name="camera"></ion-icon>
-                    Upload post
+                    [disabled]="contentText.invalid || !imageUrl || isUploading">
+                    <ion-icon slot="start" name="cloud-upload-outline" *ngIf="!isUploading"></ion-icon>
+                    <p>{{isUploading ?'Uploading....': "Upload"}}</p>
                 </ion-button>
             </ion-col>
 

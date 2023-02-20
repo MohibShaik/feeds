@@ -13,12 +13,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AjaxService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient , private storage : DataService) { }
 
   public get(config): Observable<any> {
     const params = new HttpParams();
@@ -31,7 +32,7 @@ export class AjaxService {
     // Http headers instance with any headers to add / override in config
     const headers = new HttpHeaders({
       ...config.headers,
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      Authorization: `Bearer ${this.storage.getItem('accessToken')}`,
     });
 
     // API `url` from config
@@ -100,7 +101,7 @@ export class AjaxService {
         withCredentials: false,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${this.storage.getItem('accessToken')}`,
           // ...config.headers
         }),
       };
@@ -124,7 +125,7 @@ export class AjaxService {
         withCredentials: false,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${this.storage.getItem('accessToken')}`,
           // ...config.headers
         }),
       };
@@ -148,7 +149,7 @@ export class AjaxService {
       withCredentials: false,
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${this.storage.getItem('accessToken')}`,
       }),
     };
 

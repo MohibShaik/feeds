@@ -38,6 +38,7 @@
 
     .feed-card-title {
         font-size: 16px;
+        color: #4B495F;
     }
 
     .feed-date {
@@ -112,6 +113,7 @@
 .f-13 {
     font-size: 13px;
 }
+
 .fw-600 {
     font-weight: 600;
 }
@@ -137,4 +139,14 @@
 
 a {
     text-decoration: none;
+}
+
+.danger-text {
+    color: var(--ion-color-danger) !important;
+}
+
+.primary-btn {
+    --background: linear-gradient(273.25deg, #7B04FF -73.41%, #26A7FF 100.43%);
+    --box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    --border-radius: 25px;
 }

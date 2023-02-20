@@ -37,6 +37,7 @@ export class AddCommentComponent implements OnInit {
       console.log(response);
       this.post = response?.data;
       this.newComment = "";
+      this.modalController.dismiss(true);
     })
   }
 

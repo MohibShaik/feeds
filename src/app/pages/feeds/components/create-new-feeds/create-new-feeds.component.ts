@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
-import { AjaxService, ApiService, ToasterService } from 'src/app/core/services';
+import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/core/services';
 import { concat, Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -23,11 +23,12 @@ interface LocalFile {
   styleUrls: ['./create-new-feeds.component.scss'],
 })
 export class CreateNewFeedsComponent implements OnInit {
-  public userId = localStorage.getItem('userId');
+  public userId = this.storage.getItem('userId');
   public newFeedForm: FormGroup;
   images: LocalFile[] = [];
   imageUrl: string;
   public contentText = new FormControl('', [Validators.required]);
+  public isUploading = false;
 
   constructor(
     private modalController: ModalController,
@@ -35,6 +36,7 @@ export class CreateNewFeedsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private uploadService: FileUploadService,
     private toasterservice: ToasterService,
+    private storage : DataService
   ) {
   }
 
@@ -48,10 +50,12 @@ export class CreateNewFeedsComponent implements OnInit {
 
   takePicture = async () => {
     let camermaOptions: CameraOptions = {
-      quality: 90,
-      allowEditing: false,
+      quality: 100,
+      allowEditing: true,
+      saveToGallery: true,
+      height: 300,
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt
+      source: CameraSource.Prompt,
     };
     Camera.getPhoto(camermaOptions).then((imageData) => {
       this.imageUrl = imageData.dataUrl;
@@ -62,6 +66,7 @@ export class CreateNewFeedsComponent implements OnInit {
 
   uploadPicture(): void {
     if (this.imageUrl) {
+      this.isUploading = true;
       const formData: FormData = new FormData();
       formData.append('image', this.imageUrl);
       formData.append('content', this.contentText.value);
@@ -73,11 +78,12 @@ export class CreateNewFeedsComponent implements OnInit {
 
       this.uploadService.upload(url, formData).subscribe(
         (event: any) => {
+          this.isUploading = false;
           this.closeModal(true);
         },
         (err: any) => {
           this.toasterservice.presentToast(err, 'error-text')
-
+          this.isUploading = false;
         });
     }
   }

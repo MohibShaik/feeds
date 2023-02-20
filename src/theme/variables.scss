@@ -4,7 +4,7 @@
 
 /** Ionic CSS Variables **/
 :root {
-  --ion-color-primary: #1560bd;
+  --ion-color-primary: #668EFF;
   --ion-color-primary-rgb: 21, 96, 189;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -47,7 +47,7 @@
   --ion-color-danger-tint: #ed576b;
   --highlight-color-invalid: #eb445a;
 
-  --ion-color-dark: #0f0f0f;
+  --ion-color-dark: #4B495F;
   --ion-color-dark-rgb: 244, 245, 248;
   --ion-color-dark-contrast: #000000;
   --ion-color-dark-contrast-rgb: 0, 0, 0;
@@ -69,4 +69,5 @@
   --ion-color-light-tint: #f5f6f9;
 
   --ion-font-family: "Ubuntu", sans-serif;
+  --ion-text-color: #4B495F
 }

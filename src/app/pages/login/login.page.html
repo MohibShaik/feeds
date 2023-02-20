@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header-text">
       <ion-text color="dark">
-        <h2>Hello Again!</h2>
+        <h1>Hello Again!</h1>
       </ion-text>
 
       <ion-text color="dark">
@@ -48,7 +48,10 @@
             <a class="fp-link">Forgot Password?</a>
           </div>
 
-          <ion-button expand="block" class="primary-expand-btn" (click)="login()">Login</ion-button>
+          <ion-button expand="block" class="primary-expand-btn primary-btn" (click)="login()">
+            <ion-spinner name="lines-sharp" *ngIf="loading"></ion-spinner>
+            Login
+          </ion-button>
         </form>
       </div>
 

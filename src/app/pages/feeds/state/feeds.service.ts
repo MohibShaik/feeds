@@ -40,9 +40,22 @@ export class FeedsService {
         }));
     }
 
+    getFavouritePosts(userId: string): Observable<any> {
+        return this.http.get(this.APIUrls.getFavouritePosts(userId), null, true).pipe(tap(data => {
+            return data.data
+        }));
+    }
+
     addCommentToFeed(data: any, postId: string): Observable<any> {
-        console.log(data);
         return this.http.post(this.APIUrls.commentPostById(postId), data)
+    }
+
+    addFavorites(data: any, userId: string): Observable<any> {
+        return this.http.post(this.APIUrls.addFavouritePosts(userId), data)
+    }
+
+    removeFavorites(data: any, userId: string): Observable<any> {
+        return this.http.post(this.APIUrls.removeFavouritePosts(userId), data)
     }
 
 }

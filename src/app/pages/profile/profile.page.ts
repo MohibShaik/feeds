@@ -9,6 +9,8 @@ import { Camera, CameraOptions, CameraResultType, CameraSource, Photo } from '@c
 import { FileUploadService } from 'src/app/core/services/file-upload.service';
 import { ViewImageComponent } from './components/view-image/view-image.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
+import { FeedsService } from '../feeds/state/feeds.service';
+import { FavouritesComponent } from './components/favourites/favourites.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,11 +18,12 @@ import { UsersListComponent } from './components/users-list/users-list.component
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
-  public userData: User;
+  public userData: any;
   public userFeeds$: Observable<any>;
   private userId: string;
   userAvator: string;
+  userFeeds: any;
+  favouritePosts: any;
 
   constructor(
     private apiService: ApiService,
@@ -30,12 +33,18 @@ export class ProfilePage implements OnInit {
     private storage: DataService,
     public modalController: ModalController,
     private uploadService: FileUploadService,
+    private feedsService: FeedsService,
   ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem('userId');
+  }
+
+  ionViewWillEnter() {
+    this.userData = this.storage.getItem('user');
+    this.userId = this.storage.getItem('userId');
     if (this.userId) {
-      this.getUserInfo(this.userId);
+      this.getUserFeeds();
+      this.getFavouritePostsByUserId();
     }
   }
 
@@ -48,7 +57,11 @@ export class ProfilePage implements OnInit {
       cacheKey: false,
     };
 
-    this.userFeeds$ = this.ajaxService.get(config)
+    this.ajaxService.get(config).subscribe(response => {
+      this.userFeeds = response.data;
+    }, (error) => {
+      console.log(error)
+    })
   }
 
   public async openEditDialog() {
@@ -59,7 +72,7 @@ export class ProfilePage implements OnInit {
     modal.onDidDismiss().then((response) => {
       console.log(response)
       if (response.data) {
-        this.getUserInfo(this.userId)
+        this.getUserInfo(this.userId);
       }
     });
 
@@ -77,10 +90,34 @@ export class ProfilePage implements OnInit {
 
     this.ajaxService.get(config).subscribe(response => {
       this.userData = response.data;
-      this.getUserFeeds()
+      this.getUserFeeds();
+      this.getFavouritePostsByUserId();
     }, (error) => {
       console.log(error)
     })
+  }
+
+  private getFavouritePostsByUserId() {
+    this.feedsService.getFavouritePosts(this.userId).subscribe(response => {
+      this.favouritePosts = response.data
+    }, (error) => {
+      console.log(error)
+    })
+  }
+
+  public async viewFavourites() {
+    const modal = await this.modalController.create({
+      component: FavouritesComponent,
+      componentProps: { favourites: this.favouritePosts, userId: this.userId }
+    });
+
+    modal.onDidDismiss().then((response) => {
+      console.log(response)
+
+    });
+
+    return await modal.present();
+
   }
 
   public async viewProfilePicture(imagePath: string) {

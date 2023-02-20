@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { NotificationMessages } from 'src/app/core/enums/messages';
 import { AjaxService, ApiService, DataService, ToasterService } from 'src/app/core/services';
+import { FcmService } from 'src/app/core/services/fcm.service';
 
 @Component({
   selector: 'app-login',
@@ -13,15 +15,16 @@ export class LoginPage implements OnInit {
   public loginForm: FormGroup;
   public passwordType: string = 'password';
   public passwordIcon: string = 'eye-off';
+  public loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
     private ajaxService: AjaxService,
-    private modalCtrl: ModalController,
     private router: Router,
     private toaster: ToasterService,
-    private storage: DataService
+    private storage: DataService,
+    private fcmService: FcmService,
   ) {
     this.initializeLoginForm();
   }
@@ -34,8 +37,8 @@ export class LoginPage implements OnInit {
   }
 
   private checkLoggedInUser() {
-    const userId = localStorage.getItem('userId');
-    const accessToken = localStorage.getItem('accessToken');
+    const userId = this.storage.getItem('userId');
+    const accessToken = this.storage.getItem('accessToken');
     if (userId && accessToken) {
       this.router.navigate(['dahboard'], { replaceUrl: true });
     }
@@ -57,6 +60,7 @@ export class LoginPage implements OnInit {
     if (this.loginForm.invalid) {
       return;
     } else {
+      this.loading = true;
       const { API_CONFIG, API_URLs } = this.apiService;
       const url = `${API_CONFIG.apiHost}${API_URLs.login}`;
 
@@ -67,14 +71,17 @@ export class LoginPage implements OnInit {
       };
       this.ajaxService.post(config).subscribe(
         (response) => {
-          console.log(response);
+          this.loading = false;
           this.toaster.presentToast('Log in successful', 'success-text');
           this.storage.set('user', response?.user);
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('userId', response.user.id);
+          this.storage.setItem('accessToken', response.accessToken);
+          this.storage.setItem('userId', response.user.id);
+          this.storage.setItem('user', response?.user);
           this.router.navigate(['dahboard'], { replaceUrl: true });
+          this.fcmService.notificationBuilder(response?.user?.username + ' ' + NotificationMessages?.LOG_IN);
         },
         (error) => {
+          this.loading = false;
           this.toaster.presentToast(error.error.message, 'error-text')
         }
       );

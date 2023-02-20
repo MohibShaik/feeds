@@ -1,17 +1,19 @@
 <ion-content>
   <div class="container">
-    <div class="header">
+    <div class="header" fxLayout="row" fxLayoutAlign="space-evenly center">
       <div class="user-avator">
         <img [src]="userData?.imagePath ? userData?.imagePath : '/assets/icon/user-avator-2.png' " alt="user-avator"
           (click)="viewProfilePicture(userData?.imagePath)">
       </div>
 
-      <h2 class="text-center f-22 fw-600">{{userData?.username}}</h2>
-      <p *ngIf="userData?.role==='admin'" class="text-center f-14 fw-600">
-        (Admin)
-      </p>
-      <div class="action text-center">
-        <a class="f-14 fw-600" color="primary" (click)="openEditDialog()">Edit Profile</a>
+      <div class="profile-content">
+        <h2 class="text-center f-22 fw-600">{{userData?.username}}</h2>
+        <p *ngIf="userData?.role==='admin'" class="text-center f-14 fw-600">
+          (Admin)
+        </p>
+        <div class="action text-center">
+          <a class="f-14 fw-600" color="primary" (click)="openEditDialog()">Edit Profile</a>
+        </div>
       </div>
     </div>
 
@@ -19,15 +21,23 @@
       <div class="cards-list">
         <div class="card-item">
           <ion-text color="primary">
-            <p class="fw-600 f-22 count-text">{{(userFeeds$ | async)?.data.length ? (userFeeds$ | async)?.data.length : 0 }}</p>
+            <p class="fw-600 f-22 count-text">{{userFeeds?.length ? userFeeds?.length :
+              0 }}</p>
           </ion-text>
           <p class="label-text">Feeds</p>
         </div>
 
+        <div class="card-item">
+          <ion-text color="primary">
+            <p class="fw-600 f-22 count-text">{{favouritePosts?.length ? favouritePosts?.length :
+              0 }}</p>
+          </ion-text>
+          <p class="label-text">Favourites</p>
+        </div>
       </div>
 
       <ion-card class="settings-card">
-        <ion-item lines="none">
+        <ion-item lines="none" (click)="viewFavourites()">
           <ion-icon name="heart-outline" slot="start"></ion-icon>
           <ion-label class="label-text f-16 fw-600">Favorites</ion-label>
           <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
